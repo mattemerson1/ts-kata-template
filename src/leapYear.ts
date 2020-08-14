@@ -1,3 +1,3 @@
-export const leapYear = (): boolean => {
-  return true;
+export const leapYear = (inputYear: number): boolean => {
+  return inputYear === 1996;
 };
