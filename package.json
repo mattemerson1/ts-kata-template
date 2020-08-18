@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node src/bank.ts",
-    "dev": "nodemon src/bank.ts",
+    "start": "ts-node src/Account.ts",
+    "dev": "nodemon src/Account.ts",
     "lint": "eslint \"./{src,tests}/*\"",
     "lint:fix": "yarn lint --fix",
     "test": "jest",
