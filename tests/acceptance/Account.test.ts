@@ -1,4 +1,4 @@
-import Account from "../src/Account";
+import Account from "../../src/Account";
 
 describe("BankAccount", () => {
   it("should handle deposits, withdrawals and printing statements", () => {
