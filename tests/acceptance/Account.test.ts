@@ -1,10 +1,20 @@
 import Account from "../../src/Account";
+import TransactionHistory from "../../src/TransactionHistory";
+import { Clock } from "../../src/Clock";
 
 describe("BankAccount", () => {
   it("should handle deposits, withdrawals and printing statements", () => {
     // Arrange Step
     const mockPrint = jest.fn();
-    const account = new Account();
+    const mockGetDateAsString = jest
+      .fn()
+      .mockReturnValueOnce("10/01/2012")
+      .mockReturnValueOnce("13/01/2012")
+      .mockReturnValueOnce("14/01/2012");
+
+    const clock: Clock = { getDateAsString: mockGetDateAsString };
+    const transactionHistory = new TransactionHistory(clock);
+    const account = new Account(transactionHistory);
 
     // Act Step
     account.deposit(1000);
