@@ -1,5 +1,7 @@
 import Account from "../../src/Account";
 import TransactionHistory from "../../src/TransactionHistory";
+import { Transaction } from "../../src/Transaction";
+import Printer from "../../src/Printer";
 
 describe("Account", () => {
   it("should store a deposit in a transactionHistory", () => {
@@ -8,8 +10,11 @@ describe("Account", () => {
     const mockTransactionHistory = {
       addDepositTransaction: mockAddDepositTransaction,
     };
+    const mockPrinter = {};
+
     const account = new Account(
-      (mockTransactionHistory as unknown) as TransactionHistory
+      (mockTransactionHistory as unknown) as TransactionHistory,
+      mockPrinter as Printer
     );
 
     // Act
@@ -25,8 +30,10 @@ describe("Account", () => {
     const mockTransactionHistory = {
       addWithdrawTransaction: mockAddWithdrawTransaction,
     };
+    const mockPrinter = {};
     const account = new Account(
-      (mockTransactionHistory as unknown) as TransactionHistory
+      (mockTransactionHistory as unknown) as TransactionHistory,
+      mockPrinter as Printer
     );
 
     // Act
@@ -34,5 +41,28 @@ describe("Account", () => {
 
     // Assert
     expect(mockAddWithdrawTransaction).toBeCalledWith(500);
+  });
+
+  it("Should handle printing a statement", () => {
+    // Arrange
+    const allTransactions: Transaction[] = [{ amount: 100, date: "05/09/20" }];
+    const mockPrintStatement = jest.fn();
+    const mockGetAllTransactions = jest.fn().mockReturnValue(allTransactions);
+
+    const mockTransactionHistory = {
+      getAllTransactions: mockGetAllTransactions,
+    };
+    const mockPrinter = { printStatement: mockPrintStatement };
+
+    const account = new Account(
+      (mockTransactionHistory as unknown) as TransactionHistory,
+      mockPrinter
+    );
+
+    // Act
+    account.printStatement();
+
+    // Assert
+    expect(mockPrintStatement).toHaveBeenCalledWith(allTransactions);
   });
 });

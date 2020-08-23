@@ -1,6 +1,7 @@
 import Account from "../../src/Account";
 import TransactionHistory from "../../src/TransactionHistory";
 import { Clock } from "../../src/Clock";
+import Printer from "../../src/Printer";
 
 describe("BankAccount", () => {
   it("should handle deposits, withdrawals and printing statements", () => {
@@ -14,7 +15,9 @@ describe("BankAccount", () => {
 
     const clock: Clock = { getDateAsString: mockGetDateAsString };
     const transactionHistory = new TransactionHistory(clock);
-    const account = new Account(transactionHistory);
+    const printer = new Printer();
+
+    const account = new Account(transactionHistory, printer);
 
     // Act Step
     account.deposit(1000);

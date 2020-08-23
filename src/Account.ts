@@ -1,8 +1,12 @@
 import AccountService from "./AccountService";
 import TransactionHistory from "./TransactionHistory";
+import Printer from "./Printer";
 
 export default class Account implements AccountService {
-  constructor(private transactionHistory: TransactionHistory) {}
+  constructor(
+    private transactionHistory: TransactionHistory,
+    private printer: Printer
+  ) {}
 
   deposit(amount: number): void {
     this.transactionHistory.addDepositTransaction(amount);
@@ -11,6 +15,6 @@ export default class Account implements AccountService {
     this.transactionHistory.addWithdrawTransaction(amount);
   }
   printStatement(): void {
-    throw new Error("Method not implemented.");
+    this.printer.printStatement(this.transactionHistory.getAllTransactions());
   }
 }
