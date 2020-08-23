@@ -4,8 +4,10 @@ import TransactionHistory from "../../src/TransactionHistory";
 describe("Account", () => {
   it("should store a deposit in a transactionHistory", () => {
     // Arrange
-    const mockAddDeposit = jest.fn();
-    const mockTransactionHistory = { addDeposit: mockAddDeposit };
+    const mockAddDepositTransaction = jest.fn();
+    const mockTransactionHistory = {
+      addDepositTransaction: mockAddDepositTransaction,
+    };
     const account = new Account(
       (mockTransactionHistory as unknown) as TransactionHistory
     );
@@ -14,6 +16,23 @@ describe("Account", () => {
     account.deposit(1000);
 
     // Assert
-    expect(mockAddDeposit).toHaveBeenCalledWith(1000);
+    expect(mockAddDepositTransaction).toHaveBeenCalledWith(1000);
+  });
+
+  it("should store a withdraw in a transactionHistory", () => {
+    // Arrange
+    const mockAddWithdrawTransaction = jest.fn();
+    const mockTransactionHistory = {
+      addWithdrawTransaction: mockAddWithdrawTransaction,
+    };
+    const account = new Account(
+      (mockTransactionHistory as unknown) as TransactionHistory
+    );
+
+    // Act
+    account.withdraw(500);
+
+    // Assert
+    expect(mockAddWithdrawTransaction).toBeCalledWith(500);
   });
 });
