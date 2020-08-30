@@ -6,7 +6,7 @@ import Printer from "../../src/Printer";
 describe("BankAccount", () => {
   it("should handle deposits, withdrawals and printing statements", () => {
     // Arrange Step
-    const mockPrint = jest.fn();
+    const mockPrintLine = jest.fn();
     const mockGetDateAsString = jest
       .fn()
       .mockReturnValueOnce("10/01/2012")
@@ -15,7 +15,7 @@ describe("BankAccount", () => {
 
     const clock: Clock = { getDateAsString: mockGetDateAsString };
     const transactionHistory = new TransactionHistory(clock);
-    const printer = new Printer();
+    const printer = new Printer(mockPrintLine);
 
     const account = new Account(transactionHistory, printer);
 
@@ -26,10 +26,22 @@ describe("BankAccount", () => {
     account.printStatement();
 
     // Assert Step
-    expect(mockPrint).toHaveBeenNthCalledWith(1, "Date || Amount || Balance");
-    expect(mockPrint).toHaveBeenNthCalledWith(2, "14/01/2012 || -500 || 2500");
-    expect(mockPrint).toHaveBeenNthCalledWith(3, "13/01/2012 || 2000 || 3000");
-    expect(mockPrint).toHaveBeenNthCalledWith(4, "10/01/2012 || 1000 || 1000");
+    expect(mockPrintLine).toHaveBeenNthCalledWith(
+      1,
+      "Date || Amount || Balance"
+    );
+    expect(mockPrintLine).toHaveBeenNthCalledWith(
+      2,
+      "14/01/2012 || -500 || 2500"
+    );
+    expect(mockPrintLine).toHaveBeenNthCalledWith(
+      3,
+      "13/01/2012 || 2000 || 3000"
+    );
+    expect(mockPrintLine).toHaveBeenNthCalledWith(
+      4,
+      "10/01/2012 || 1000 || 1000"
+    );
   });
 });
 

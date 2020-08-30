@@ -14,7 +14,7 @@ describe("Account", () => {
 
     const account = new Account(
       (mockTransactionHistory as unknown) as TransactionHistory,
-      mockPrinter as Printer
+      (mockPrinter as unknown) as Printer
     );
 
     // Act
@@ -45,7 +45,9 @@ describe("Account", () => {
 
   it("Should handle printing a statement", () => {
     // Arrange
-    const allTransactions: Transaction[] = [{ amount: 100, date: "05/09/20" }];
+    const allTransactions: Transaction[] = [
+      { amount: 100, date: "05/09/2020" },
+    ];
     const mockPrintStatement = jest.fn();
     const mockGetAllTransactions = jest.fn().mockReturnValue(allTransactions);
 
@@ -56,7 +58,7 @@ describe("Account", () => {
 
     const account = new Account(
       (mockTransactionHistory as unknown) as TransactionHistory,
-      mockPrinter
+      (mockPrinter as unknown) as Printer
     );
 
     // Act
