@@ -1,5 +1,6 @@
 import Printer from "../../src/Printer";
 import { Transaction } from "../../src/Transaction";
+import { Balance } from "../../src/Balance";
 
 describe("Printer", () => {
   it("should print an empty statement", () => {
@@ -8,8 +9,9 @@ describe("Printer", () => {
     const mockPrintLine = jest.fn();
     const printer = new Printer(mockPrintLine);
     const transactions: Transaction[] = [];
+    const transactionAmounts: Balance[] = [];
     // Act
-    printer.printStatement(transactions);
+    printer.printStatement(transactions, transactionAmounts);
 
     // Assert
     expect(mockPrintLine).toBeCalledWith(transactionHeaders);
@@ -20,8 +22,9 @@ describe("Printer", () => {
     const mockPrintLine = jest.fn();
     const printer = new Printer(mockPrintLine);
     const transactions: Transaction[] = [{ amount: 500, date: "10/01/2012" }];
+    const transactionAmounts: Balance[] = [{ amount: 500 }];
     // Act
-    printer.printStatement(transactions);
+    printer.printStatement(transactions, transactionAmounts);
 
     // Assert
     expect(mockPrintLine).toHaveBeenNthCalledWith(1, transactionHeaders);
@@ -39,8 +42,9 @@ describe("Printer", () => {
       { amount: 500, date: "10/01/2012" },
       { amount: -500, date: "11/05/2012" },
     ];
+    const transactionAmounts: Balance[] = [{ amount: 500 }, { amount: -500 }];
     // Act
-    printer.printStatement(transactions);
+    printer.printStatement(transactions, transactionAmounts);
 
     // Assert
     expect(mockPrintLine).toHaveBeenNthCalledWith(1, transactionHeaders);

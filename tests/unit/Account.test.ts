@@ -2,6 +2,7 @@ import Account from "../../src/Account";
 import TransactionHistory from "../../src/TransactionHistory";
 import { Transaction } from "../../src/Transaction";
 import Printer from "../../src/Printer";
+import { Balance } from "../../src/Balance";
 
 describe("Account", () => {
   it("should store a deposit in a transactionHistory", () => {
@@ -48,11 +49,16 @@ describe("Account", () => {
     const allTransactions: Transaction[] = [
       { amount: 100, date: "05/09/2020" },
     ];
+    const allTransactionAmounts: Balance[] = [{ amount: 100 }];
     const mockPrintStatement = jest.fn();
     const mockGetAllTransactions = jest.fn().mockReturnValue(allTransactions);
+    const mockGetBalanceHistory = jest
+      .fn()
+      .mockReturnValue(allTransactionAmounts);
 
     const mockTransactionHistory = {
       getAllTransactions: mockGetAllTransactions,
+      getBalanceHistory: mockGetBalanceHistory,
     };
     const mockPrinter = { printStatement: mockPrintStatement };
 
@@ -65,6 +71,9 @@ describe("Account", () => {
     account.printStatement();
 
     // Assert
-    expect(mockPrintStatement).toHaveBeenCalledWith(allTransactions);
+    expect(mockPrintStatement).toHaveBeenCalledWith(
+      allTransactions,
+      allTransactionAmounts
+    );
   });
 });
