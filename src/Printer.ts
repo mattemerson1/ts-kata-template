@@ -4,7 +4,7 @@ import { Balance } from "./Balance";
 
 export default class Printer {
   private balance: Balance[] = [];
-  constructor(private printLine: PrintLine) { }
+  constructor(private printLine: PrintLine) {}
   printStatement(
     transactions: Transaction[],
     transactionAmounts: Balance[]

@@ -30,7 +30,7 @@ export default class TransactionHistory {
     return this.transactions;
   }
 
-  getBalanceHistory(): Balance[] {
+  getTransactionAmounts(): Balance[] {
     return this.transactionAmounts;
   }
 }

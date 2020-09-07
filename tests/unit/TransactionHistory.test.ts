@@ -49,7 +49,7 @@ describe("TransactionHistory", () => {
     const expectedTransactionAmounts: Balance[] = [{ amount: -500 }];
     // Act
     transactionHistory.addWithdrawTransaction(500);
-    const allTransactionAmounts: Balance[] = transactionHistory.getBalanceHistory();
+    const allTransactionAmounts: Balance[] = transactionHistory.getTransactionAmounts();
     // Assert
     expect(allTransactionAmounts).toEqual(expectedTransactionAmounts);
   });

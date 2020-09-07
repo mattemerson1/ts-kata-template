@@ -52,13 +52,13 @@ describe("Account", () => {
     const allTransactionAmounts: Balance[] = [{ amount: 100 }];
     const mockPrintStatement = jest.fn();
     const mockGetAllTransactions = jest.fn().mockReturnValue(allTransactions);
-    const mockGetBalanceHistory = jest
+    const mockGetTransactionAmounts = jest
       .fn()
       .mockReturnValue(allTransactionAmounts);
 
     const mockTransactionHistory = {
       getAllTransactions: mockGetAllTransactions,
-      getBalanceHistory: mockGetBalanceHistory,
+      getTransactionAmounts: mockGetTransactionAmounts,
     };
     const mockPrinter = { printStatement: mockPrintStatement };
 
