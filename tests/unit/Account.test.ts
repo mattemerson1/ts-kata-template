@@ -71,9 +71,6 @@ describe("Account", () => {
     account.printStatement();
 
     // Assert
-    expect(mockPrintStatement).toHaveBeenCalledWith(
-      allTransactions,
-      allTransactionAmounts
-    );
+    expect(mockPrintStatement).toHaveBeenCalledWith(allTransactions);
   });
 });

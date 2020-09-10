@@ -14,9 +14,6 @@ export default class Account implements AccountService {
     this.transactionHistory.addWithdrawTransaction(amount);
   }
   printStatement(): void {
-    this.printer.printStatement(
-      this.transactionHistory.getAllTransactions(),
-      this.transactionHistory.getTransactionAmounts()
-    );
+    this.printer.printStatement(this.transactionHistory.getAllTransactions());
   }
 }
