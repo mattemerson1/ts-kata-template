@@ -1,5 +1,6 @@
 import Printer from "../../src/Printer";
 import { Transaction } from "../../src/Transaction";
+import { Balance } from "../../src/Balance";
 
 describe("Printer", () => {
   it("should print an empty statement", () => {

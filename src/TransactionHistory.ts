@@ -3,7 +3,6 @@ import { Clock } from "./Clock";
 
 export default class TransactionHistory {
   private transactions: Transaction[] = [];
-
   constructor(private clock: Clock) {}
 
   addDepositTransaction(amount: number): void {
@@ -18,7 +17,6 @@ export default class TransactionHistory {
       date: this.clock.getDateAsString(),
     });
   }
-
   getAllTransactions(): Transaction[] {
     return this.transactions;
   }

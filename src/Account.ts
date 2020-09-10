@@ -1,7 +1,6 @@
 import AccountService from "./AccountService";
 import TransactionHistory from "./TransactionHistory";
 import Printer from "./Printer";
-
 export default class Account implements AccountService {
   constructor(
     private transactionHistory: TransactionHistory,
