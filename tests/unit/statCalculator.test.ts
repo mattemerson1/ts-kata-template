@@ -50,16 +50,10 @@ describe("calculateStats test", () => {
       average: 21.833333,
     };
     const inputArray = [6, 9, 15, -2, 92, 11];
-    const mockMinimumValue = jest.fn((inputArray) => Math.min(...inputArray));
-    const mockMaximumValue = jest.fn((inputArray) => Math.max(...inputArray));
-    const mockArrLength = jest.fn((inputArray) => inputArray.length);
-    const mockArrAverage = jest.fn((inputArray) =>
-      Number(
-        (
-          inputArray.reduce((a: number, b: number) => a + b) / inputArray.length
-        ).toFixed(6)
-      )
-    );
+    const mockMinimumValue = jest.fn().mockReturnValue(-2);
+    const mockMaximumValue = jest.fn().mockReturnValue(92);
+    const mockArrLength = jest.fn().mockReturnValue(6);
+    const mockArrAverage = jest.fn().mockReturnValue(21.833333);
     // Act
 
     // Assert
