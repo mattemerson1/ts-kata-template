@@ -20,4 +20,10 @@ describe("", () => {
     // Assert
     expect(romanNumeralConverter(4)).toBe("IV");
   });
+  it("convert arabic numeral 5 into the roman numeral V", () => {
+    // Arrange
+    // Act
+    // Assert
+    expect(romanNumeralConverter(5)).toBe("V");
+  });
 });
