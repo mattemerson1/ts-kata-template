@@ -14,4 +14,10 @@ describe("", () => {
       expect(romanNumeralConverter(a)).toBe(expected);
     }
   );
+  it("convert arabic numeral 4 into the roman numeral IV", () => {
+    // Arrange
+    // Act
+    // Assert
+    expect(romanNumeralConverter(4)).toBe("IV");
+  });
 });
