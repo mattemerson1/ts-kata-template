@@ -26,4 +26,17 @@ describe("", () => {
     // Assert
     expect(romanNumeralConverter(5)).toBe("V");
   });
+  it.each([
+    [6, "VI"],
+    [7, "VII"],
+    [8, "VIII"],
+  ])(
+    `convert arabic numeral $a into the roman numeral $expected`,
+    (a, expected) => {
+      // Arrange
+      // Act
+      // Assert
+      expect(romanNumeralConverter(a)).toBe(expected);
+    }
+  );
 });
