@@ -1,4 +1,7 @@
-import { romanNumeralConverter } from "../src/RomanNumerals";
+import {
+  romanNumeralConverter,
+  isUniqueRomanNumeral,
+} from "../src/RomanNumerals";
 
 describe("", () => {
   it.each([
@@ -30,6 +33,9 @@ describe("", () => {
     [6, "VI"],
     [7, "VII"],
     [8, "VIII"],
+    [9, "IX"],
+    [10, "X"],
+    [11, "XI"],
   ])(
     `convert arabic numeral $a into the roman numeral $expected`,
     (a, expected) => {
@@ -37,6 +43,19 @@ describe("", () => {
       // Act
       // Assert
       expect(romanNumeralConverter(a)).toBe(expected);
+    }
+  );
+  it.each([
+    [1, true],
+    [5, true],
+    [4, false],
+  ])(
+    "Is the arabic numeral equivelent to a unique roman numeral symbol",
+    () => {
+      // Arrange
+      // Act
+      // Assert
+      expect(isUniqueRomanNumeral(5)).toBe(true);
     }
   );
 });
