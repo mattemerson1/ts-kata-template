@@ -7,12 +7,8 @@ export const romanNumeralConverter = (arabicNumber: number): string | void => {
     return romanNumerals[arabicNumber];
   } else if (arabicNumber.toString().length == 2) {
     return doubleDigitRomanNumeralConverter(arabicNumber);
-  } else if (isOneValueBeforeUniqueRomanNumeral(arabicNumber)) {
-    return "I" + romanNumerals[arabicNumber + 1];
-  } else if (arabicNumber < 4) {
-    return "I".repeat(arabicNumber);
-  } else if (arabicNumber > 5) {
-    return "V" + "I".repeat(arabicNumber - 5);
+  } else if (arabicNumber.toString().length == 1) {
+    return getUnitRomanNumeral(arabicNumber);
   }
 };
 
@@ -21,17 +17,32 @@ export const doubleDigitRomanNumeralConverter = (
 ): string => {
   const romanTenth = getTenthRomanNumeral(arabicNumber);
   const romanUnit = getUnitRomanNumeral(arabicNumber);
-  return romanTenth + romanUnit;
+  return romanTenth.concat(romanUnit);
 };
 
-export const getTenthRomanNumeral = (arabicNumer: number): string => {
-  return "X".repeat(Math.floor(arabicNumer / 10));
+export const getTenthRomanNumeral = (arabicNumber: number): string => {
+  const tenths = Math.floor(arabicNumber / 10);
+  if (tenths == 9) {
+    return "XC";
+  } else if (tenths >= 5) {
+    return "L" + "X".repeat(tenths - 5);
+  } else if (tenths == 4) {
+    return "XL";
+  } else {
+    return "X".repeat(tenths);
+  }
 };
 
-export const getUnitRomanNumeral = (arabicNumber: number): string | void => {
+export const getUnitRomanNumeral = (arabicNumber: number): string => {
   const arabicNumberString = arabicNumber.toString();
   const arabicUnit = Number(arabicNumberString[arabicNumberString.length - 1]);
-  if (arabicUnit < 4) {
+  if (arabicUnit == 9) {
+    return "IX";
+  } else if (arabicUnit >= 5) {
+    return "V" + "I".repeat(arabicUnit - 5);
+  } else if (arabicUnit == 4) {
+    return "IV";
+  } else {
     return "I".repeat(arabicUnit);
   }
 };
