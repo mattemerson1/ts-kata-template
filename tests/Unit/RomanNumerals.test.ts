@@ -1,9 +1,11 @@
 import {
   romanNumeralConverter,
-  isUniqueRomanNumeral,
+  isSingularRomanNumeral,
   getTenthRomanNumeral,
   getUnitRomanNumeral,
   doubleDigitRomanNumeralConverter,
+  tripleDigitRomanNumeralConverter,
+  quadDigitRomanNumeralConverter,
   isOneValueBeforeUniqueRomanNumeral,
 } from "../../src/RomanNumerals";
 
@@ -40,7 +42,7 @@ describe("", () => {
       // Arrange
       // Act
       // Assert
-      expect(isUniqueRomanNumeral(a)).toBe(expected);
+      expect(isSingularRomanNumeral(a)).toBe(expected);
     }
   );
   it.each([
@@ -80,5 +82,40 @@ describe("", () => {
     [2, false],
   ])("returns true if the roman numeral is ", (a, expected) => {
     expect(isOneValueBeforeUniqueRomanNumeral(a)).toBe(expected);
+  });
+  it.each([
+    [4, "IV"],
+    [9, "IX"],
+    [11, "XI"],
+    [99, "XCIX"],
+    [49, "XLIX"],
+    [36, "XXXVI"],
+    [55, "LV"],
+    [62, "LXII"],
+  ])("returns the roman numeral for a broad selection of numbers", (a, expected) => {
+    expect(romanNumeralConverter(a)).toBe(expected);
+  });
+  it.each([
+    [100, "C"],
+    [500, "D"],
+    [235, "CCXXXV"],
+    [761, "DCCLXI"],
+    [999, "CMXCIX"],
+    [433, "CDXXXIII"],
+    [846, "DCCCXLVI"],
+  ])("returns the roman numeral for a triple digit number", (a, expected) => {
+    expect(tripleDigitRomanNumeralConverter(a)).toBe(expected);
+  });
+  it.each([
+    [1000, "M"],
+    [5000, "V^"],
+    [4678, "I^V^DCLXXVIII"],
+    [9888, "I^X^DCCCLXXXVIII"],
+    [6198, "V^MCXCVIII"],
+    [2113, "MMCXIII"],
+    [1999, "MCMXCIX"],
+    [2008, "MMVIII"],
+  ])("returns the roman numeral for a quad digit number", (a, expected) => {
+    expect(quadDigitRomanNumeralConverter(a)).toBe(expected);
   });
 });
