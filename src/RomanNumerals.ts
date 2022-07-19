@@ -1,12 +1,21 @@
 import { romanNumeral } from "./romanNumeralsType";
 
-const romanNumerals: romanNumeral = { 1: "I", 5: "V", 10: "X", 50: "L", 100: "C", 500: "D", 1000: "M", 5000: "V^" };
+const romanNumerals: romanNumeral = {
+  1: "I",
+  5: "V",
+  10: "X",
+  50: "L",
+  100: "C",
+  500: "D",
+  1000: "M",
+  5000: "V^",
+};
 
 export const romanNumeralConverter = (arabicNumber: number): string | void => {
   if (isSingularRomanNumeral(arabicNumber)) {
     return romanNumerals[arabicNumber];
   } else if (arabicNumber.toString().length == 4) {
-    return quadDigitRomanNumeralConverter(arabicNumber)
+    return quadDigitRomanNumeralConverter(arabicNumber);
   } else if (arabicNumber.toString().length == 3) {
     return tripleDigitRomanNumeralConverter(arabicNumber);
   } else if (arabicNumber.toString().length == 2) {
@@ -27,7 +36,10 @@ export const quadDigitRomanNumeralConverter = (
   const romanHundredth = getHundredthRomanNumeral(arabicHundredth);
   const romanTenth = getTenthRomanNumeral(arabicTenth);
   const romanUnit = getUnitRomanNumeral(arabicUnit);
-  return romanThousandth.concat(romanHundredth).concat(romanTenth).concat(romanUnit);
+  return romanThousandth
+    .concat(romanHundredth)
+    .concat(romanTenth)
+    .concat(romanUnit);
 };
 
 export const tripleDigitRomanNumeralConverter = (
