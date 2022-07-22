@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node src/statCalculator.ts",
-    "dev": "nodemon src/statCalculator.ts",
+    "start": "ts-node src/romanNumerals.ts",
+    "dev": "nodemon src/romanNumerals.ts",
     "lint": "eslint \"./{src,tests}/*\"",
     "lint:fix": "yarn lint --fix",
     "test": "jest",
