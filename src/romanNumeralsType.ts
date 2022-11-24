@@ -1,3 +1,3 @@
 export type romanNumeral = {
-    [key: number]: string;
-  };
+  [key: number]: string;
+};
