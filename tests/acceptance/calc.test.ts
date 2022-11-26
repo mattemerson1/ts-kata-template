@@ -6,6 +6,7 @@ describe.each([[craigsEvaluate], [mattsEvaluate]])("evaluate", (evaluate) => {
     ["TRUE", true],
     ["FALSE", false],
     ["NOT TRUE", false],
+    ["NOT TRUE OR TRUE", true],
     ["NOT NOT TRUE", true],
     ["NOT NOT NOT TRUE", false],
     ["NOT FALSE", true],

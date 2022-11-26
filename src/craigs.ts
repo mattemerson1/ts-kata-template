@@ -6,14 +6,11 @@ const FALSE = "FALSE";
 const OPEN = "(";
 const CLOSE = ")";
 
-const findCorrespondingClose = (
-  expression: string[],
-  start: number
-): number => {
-  let depth = 1;
-  let index = start + 1;
+const findCorrespondingClose = (expression: string[], start: number): number => {
+  let depth = 0;
+  let index = start;
 
-  while (depth > 0) {
+  do {
     if (expression[index] === OPEN) {
       depth++;
     } else if (expression[index] === CLOSE) {
@@ -21,7 +18,7 @@ const findCorrespondingClose = (
     }
 
     index++;
-  }
+  } while (depth > 0);
 
   return index - 1;
 };
@@ -34,13 +31,13 @@ const simplifyFirstBracket = (expression: string[]): string[] => {
     indexOfFirstOpen
   );
 
-  const evaluated = simplify(
+  const simplified = simplify(
     expression.slice(indexOfFirstOpen + 1, indexOfCorrespondingClose)
   );
 
   return [
     ...expression.slice(0, indexOfFirstOpen),
-    evaluated[0],
+    simplified[0],
     ...expression.slice(indexOfCorrespondingClose + 1),
   ];
 };
@@ -48,23 +45,17 @@ const simplifyFirstBracket = (expression: string[]): string[] => {
 const simplifyFirstNot = (expression: string[]): string[] => {
   const indexOfFirstNot = expression.indexOf(NOT);
 
-  let toNegate = false;
-
-  let i = indexOfFirstNot;
-
-  while (expression[i] === NOT) {
-    toNegate = !toNegate;
-    i++;
+  if (expression[indexOfFirstNot + 1] === NOT) {
+    return [
+      ...expression.slice(0, indexOfFirstNot),
+      ...expression.slice(indexOfFirstNot + 2),
+    ];
   }
-
-  const nextWord = expression[i] === TRUE;
-
-  const evaluated = toNegate ? !nextWord : nextWord;
 
   return [
     ...expression.slice(0, indexOfFirstNot),
-    evaluated ? TRUE : FALSE,
-    ...expression.slice(i + 1),
+    expression[indexOfFirstNot + 1] === TRUE ? FALSE : TRUE,
+    ...expression.slice(indexOfFirstNot + 2),
   ];
 };
 
@@ -97,23 +88,18 @@ const simplifyFirstOr = (expression: string[]): string[] => {
 };
 
 const simplify = (expression: string[]): string[] => {
-  if (expression.includes(OPEN))
-    return simplify(simplifyFirstBracket(expression));
+  let simplified = expression;
 
-  if (expression.includes(NOT)) return simplify(simplifyFirstNot(expression));
+  while (simplified.includes(OPEN)) simplified = simplifyFirstBracket(simplified);
+  while (simplified.includes(NOT)) simplified = simplifyFirstNot(simplified);
+  while (simplified.includes(AND)) simplified = simplifyFirstAnd(simplified);
+  while (simplified.includes(OR)) simplified = simplifyFirstOr(simplified);
 
-  if (expression.includes(AND)) return simplify(simplifyFirstAnd(expression));
-
-  if (expression.includes(OR)) return simplify(simplifyFirstOr(expression));
-
-  return expression;
+  return simplified;
 };
 
 export const evaluate = (expression: string): boolean => {
-  const formatted = expression
-    .replace(/\(/g, "( ")
-    .replace(/\)/g, " )")
-    .split(" ");
+  const formatted = expression.replace(/\(/g, "( ").replace(/\)/g, " )").split(" ");
 
   return simplify(formatted)[0] === TRUE;
 };
