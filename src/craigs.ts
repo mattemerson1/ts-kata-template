@@ -31,13 +31,13 @@ const simplifyFirstBracket = (expression: string[]): string[] => {
     indexOfFirstOpen
   );
 
-  const simplified = simplify(
+  const [simplified] = simplify(
     expression.slice(indexOfFirstOpen + 1, indexOfCorrespondingClose)
   );
 
   return [
     ...expression.slice(0, indexOfFirstOpen),
-    simplified[0],
+    simplified,
     ...expression.slice(indexOfCorrespondingClose + 1),
   ];
 };
@@ -74,16 +74,16 @@ const simplifyFirstAnd = (expression: string[]): string[] => {
 };
 
 const simplifyFirstOr = (expression: string[]): string[] => {
-  const indexOfFirstAnd = expression.indexOf(OR);
+  const indexOfFirstOr = expression.indexOf(OR);
 
   const isTrue =
-    expression[indexOfFirstAnd - 1] === TRUE ||
-    expression[indexOfFirstAnd + 1] === TRUE;
+    expression[indexOfFirstOr - 1] === TRUE ||
+    expression[indexOfFirstOr + 1] === TRUE;
 
   return [
-    ...expression.slice(0, indexOfFirstAnd - 1),
+    ...expression.slice(0, indexOfFirstOr - 1),
     isTrue ? TRUE : FALSE,
-    ...expression.slice(indexOfFirstAnd + 2),
+    ...expression.slice(indexOfFirstOr + 2),
   ];
 };
 
