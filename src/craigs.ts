@@ -31,7 +31,7 @@ const simplifyFirstBracket = (expression: string[]): string[] => {
     indexOfFirstOpen
   );
 
-  const [simplified] = simplify(
+  const simplified = simplify(
     expression.slice(indexOfFirstOpen + 1, indexOfCorrespondingClose)
   );
 
@@ -87,7 +87,7 @@ const simplifyFirstOr = (expression: string[]): string[] => {
   ];
 };
 
-const simplify = (expression: string[]): string[] => {
+const simplify = (expression: string[]): string => {
   let simplified = expression;
 
   while (simplified.includes(OPEN)) simplified = simplifyFirstBracket(simplified);
@@ -95,11 +95,11 @@ const simplify = (expression: string[]): string[] => {
   while (simplified.includes(AND)) simplified = simplifyFirstAnd(simplified);
   while (simplified.includes(OR)) simplified = simplifyFirstOr(simplified);
 
-  return simplified;
+  return simplified[0];
 };
 
 export const evaluate = (expression: string): boolean => {
   const formatted = expression.replace(/\(/g, "( ").replace(/\)/g, " )").split(" ");
 
-  return simplify(formatted)[0] === TRUE;
+  return simplify(formatted) === TRUE;
 };
