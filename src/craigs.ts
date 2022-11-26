@@ -6,39 +6,18 @@ const FALSE = "FALSE";
 const OPEN = "(";
 const CLOSE = ")";
 
-const findCorrespondingClose = (expression: string[], start: number): number => {
-  let depth = 0;
-  let index = start;
-
-  do {
-    if (expression[index] === OPEN) {
-      depth++;
-    } else if (expression[index] === CLOSE) {
-      depth--;
-    }
-
-    index++;
-  } while (depth > 0);
-
-  return index - 1;
-};
-
-const simplifyFirstBracket = (expression: string[]): string[] => {
-  const indexOfFirstOpen = expression.indexOf(OPEN);
-
-  const indexOfCorrespondingClose = findCorrespondingClose(
-    expression,
-    indexOfFirstOpen
-  );
+const simplifyLastBracket = (expression: string[]): string[] => {
+  const indexOfLastOpen = expression.lastIndexOf(OPEN);
+  const indexOfNextClose = expression.indexOf(CLOSE, indexOfLastOpen);
 
   const simplified = simplify(
-    expression.slice(indexOfFirstOpen + 1, indexOfCorrespondingClose)
+    expression.slice(indexOfLastOpen + 1, indexOfNextClose)
   );
 
   return [
-    ...expression.slice(0, indexOfFirstOpen),
+    ...expression.slice(0, indexOfLastOpen),
     simplified,
-    ...expression.slice(indexOfCorrespondingClose + 1),
+    ...expression.slice(indexOfNextClose + 1),
   ];
 };
 
@@ -90,7 +69,7 @@ const simplifyFirstOr = (expression: string[]): string[] => {
 const simplify = (expression: string[]): string => {
   let simplified = expression;
 
-  while (simplified.includes(OPEN)) simplified = simplifyFirstBracket(simplified);
+  while (simplified.includes(OPEN)) simplified = simplifyLastBracket(simplified);
   while (simplified.includes(NOT)) simplified = simplifyFirstNot(simplified);
   while (simplified.includes(AND)) simplified = simplifyFirstAnd(simplified);
   while (simplified.includes(OR)) simplified = simplifyFirstOr(simplified);
