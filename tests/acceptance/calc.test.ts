@@ -6,6 +6,11 @@ describe.each([[craigsEvaluate], [mattsEvaluate]])("evaluate", (evaluate) => {
     ["TRUE", true],
     ["FALSE", false],
     ["NOT TRUE", false],
+    ["NOT NOT TRUE", true],
+    ["NOT NOT NOT TRUE", false],
+    ["NOT FALSE", true],
+    ["NOT NOT FALSE", false],
+    ["NOT NOT NOT FALSE", true],
     ["TRUE AND FALSE", false],
     ["TRUE AND TRUE", true],
     ["TRUE OR FALSE", true],
@@ -19,6 +24,8 @@ describe.each([[craigsEvaluate], [mattsEvaluate]])("evaluate", (evaluate) => {
     ["FALSE || (NOT NOT (NOT (TRUE AND TRUE)))", false],
     ["(TRUE OR TRUE OR TRUE) AND FALSE", false],
     ["TRUE AND NOT NOT NOT TRUE AND TRUE", false],
+    ["((TRUE))", true],
+    ["(TRUE) AND (TRUE)", true],
   ])("%s should be %s", (expression: string, expected: boolean) => {
     expect(evaluate(expression)).toBe(expected);
   });

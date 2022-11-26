@@ -3,16 +3,20 @@ const AND = "AND";
 const OR = "OR";
 const TRUE = "TRUE";
 const FALSE = "FALSE";
+const OPEN = "(";
+const CLOSE = ")";
 
-const findCorrespondingClose = (expression: string, start: number): number => {
+const findCorrespondingClose = (
+  expression: string[],
+  start: number
+): number => {
   let depth = 1;
   let index = start + 1;
 
   while (depth > 0) {
-    const char = expression.charAt(index);
-    if (char === "(") {
+    if (expression[index] === OPEN) {
       depth++;
-    } else if (char === ")") {
+    } else if (expression[index] === CLOSE) {
       depth--;
     }
 
@@ -22,11 +26,8 @@ const findCorrespondingClose = (expression: string, start: number): number => {
   return index - 1;
 };
 
-const simplifyFirstBracket = (expressionArray: string[]): string[] => {
-  const expression = expressionArray.join(" ");
-  if (!expression.includes("(")) return expression.split(" ");
-
-  const indexOfFirstOpen = expression.indexOf("(");
+const simplifyFirstBracket = (expression: string[]): string[] => {
+  const indexOfFirstOpen = expression.indexOf(OPEN);
 
   const indexOfCorrespondingClose = findCorrespondingClose(
     expression,
@@ -34,21 +35,17 @@ const simplifyFirstBracket = (expressionArray: string[]): string[] => {
   );
 
   const evaluated = simplify(
-    expression
-      .substring(indexOfFirstOpen + 1, indexOfCorrespondingClose)
-      .split(" ")
+    expression.slice(indexOfFirstOpen + 1, indexOfCorrespondingClose)
   );
 
-  return (
-    expression.slice(0, indexOfFirstOpen) +
-    evaluated +
-    expression.slice(indexOfCorrespondingClose + 1)
-  ).split(" ");
+  return [
+    ...expression.slice(0, indexOfFirstOpen),
+    evaluated[0],
+    ...expression.slice(indexOfCorrespondingClose + 1),
+  ];
 };
 
 const simplifyFirstNot = (expression: string[]): string[] => {
-  if (!expression.includes(NOT)) return expression;
-
   const indexOfFirstNot = expression.indexOf(NOT);
 
   let toNegate = false;
@@ -72,8 +69,6 @@ const simplifyFirstNot = (expression: string[]): string[] => {
 };
 
 const simplifyFirstAnd = (expression: string[]): string[] => {
-  if (!expression.includes(AND)) return expression;
-
   const indexOfFirstAnd = expression.indexOf(AND);
 
   const isTrue =
@@ -88,8 +83,6 @@ const simplifyFirstAnd = (expression: string[]): string[] => {
 };
 
 const simplifyFirstOr = (expression: string[]): string[] => {
-  if (!expression.includes(OR)) return expression;
-
   const indexOfFirstAnd = expression.indexOf(OR);
 
   const isTrue =
@@ -104,7 +97,7 @@ const simplifyFirstOr = (expression: string[]): string[] => {
 };
 
 const simplify = (expression: string[]): string[] => {
-  if (expression.some((word) => word.startsWith("(")))
+  if (expression.includes(OPEN))
     return simplify(simplifyFirstBracket(expression));
 
   if (expression.includes(NOT)) return simplify(simplifyFirstNot(expression));
@@ -116,5 +109,11 @@ const simplify = (expression: string[]): string[] => {
   return expression;
 };
 
-export const evaluate = (expression: string): boolean =>
-  simplify(expression.split(" "))[0] === TRUE;
+export const evaluate = (expression: string): boolean => {
+  const formatted = expression
+    .replace(/\(/g, "( ")
+    .replace(/\)/g, " )")
+    .split(" ");
+
+  return simplify(formatted)[0] === TRUE;
+};
