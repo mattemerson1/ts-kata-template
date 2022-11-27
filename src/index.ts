@@ -1,6 +1,6 @@
 export const booleanCalculator = (input: string): boolean => {
   let evaluatedStatement = [];
-  let formattedInput = formatInput(input);
+  const formattedInput = formatInput(input);
   const inputArray: string[] = formattedInput.split(" ");
   evaluatedStatement = evaluator(inputArray);
   if (input == "NOT TRUE" || input == "FALSE") {
@@ -15,7 +15,7 @@ export const booleanCalculator = (input: string): boolean => {
 };
 
 const formatInput = (input: string): string => {
-  let formattedInput = input.replaceAll("(", "( ").replaceAll(")", " )");
+  const formattedInput = input.replaceAll("(", "( ").replaceAll(")", " )");
   return formattedInput;
 };
 
@@ -53,7 +53,10 @@ const evaluateParentheses = (statementArray: string[]): string[] => {
 
 const evaluateNot = (statementArray: string[]): string[] => {
   for (let i = 0; i < statementArray.length; i++) {
-    if (statementArray[i] == "NOT" && statementArray[i + 1] == "TRUE") {
+    if (statementArray[i] == "NOT" && statementArray[i + 1] == "NOT") {
+      statementArray.splice(i, 2)
+      evaluateNot(statementArray);
+    } else if (statementArray[i] == "NOT" && statementArray[i + 1] == "TRUE") {
       statementArray[i] = "FALSE";
       statementArray.splice(i + 1, 1);
     } else if (statementArray[i] == "NOT" && statementArray[i + 1] == "FALSE") {
