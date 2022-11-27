@@ -7,16 +7,15 @@ const OPEN = "(";
 const CLOSE = ")";
 
 const mapBooleanToWord = (boolean: boolean): string => (boolean ? TRUE : FALSE);
+const mapWordToBoolean = (word: string): boolean => word === TRUE;
 
 const simplifyLastBracket = (expression: string[]): string[] => {
   const indexOfLastOpen = expression.lastIndexOf(OPEN);
   const indexOfNextClose = expression.indexOf(CLOSE, indexOfLastOpen);
 
-  const simplified = simplify(expression.slice(indexOfLastOpen + 1, indexOfNextClose));
-
   return [
     ...expression.slice(0, indexOfLastOpen),
-    simplified,
+    simplify(expression.slice(indexOfLastOpen + 1, indexOfNextClose)),
     ...expression.slice(indexOfNextClose + 1),
   ];
 };
@@ -24,13 +23,12 @@ const simplifyLastBracket = (expression: string[]): string[] => {
 const simplifyFirstNot = (expression: string[]): string[] => {
   const indexOfFirstNot = expression.indexOf(NOT);
 
-  if (expression[indexOfFirstNot + 1] === NOT) {
+  if (expression[indexOfFirstNot + 1] === NOT)
     return [...expression.slice(0, indexOfFirstNot), ...expression.slice(indexOfFirstNot + 2)];
-  }
 
   return [
     ...expression.slice(0, indexOfFirstNot),
-    mapBooleanToWord(expression[indexOfFirstNot + 1] === FALSE),
+    mapBooleanToWord(!mapWordToBoolean(expression[indexOfFirstNot + 1])),
     ...expression.slice(indexOfFirstNot + 2),
   ];
 };
@@ -73,5 +71,5 @@ const simplify = (expression: string[]): string => {
 export const evaluate = (expression: string): boolean => {
   const formatted = expression.replace(/\(/g, "( ").replace(/\)/g, " )").split(" ");
 
-  return simplify(formatted) === TRUE;
+  return mapWordToBoolean(simplify(formatted));
 };
