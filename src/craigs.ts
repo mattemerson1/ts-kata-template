@@ -1,6 +1,5 @@
 const NOT = "NOT";
 const AND = "AND";
-const OR = "OR";
 const TRUE = "TRUE";
 const FALSE = "FALSE";
 const OPEN = "(";
@@ -43,25 +42,14 @@ const simplifyFirstAnd = (expression: string[]): string[] => {
   ];
 };
 
-const simplifyFirstOr = (expression: string[]): string[] => {
-  const indexOfOr = expression.indexOf(OR);
-
-  return [
-    ...expression.slice(0, indexOfOr - 1),
-    toWord(toBoolean(expression[indexOfOr - 1]) || toBoolean(expression[indexOfOr + 1])),
-    ...expression.slice(indexOfOr + 2),
-  ];
-};
-
 const simplify = (expression: string[]): string => {
   let simplified = expression;
 
   while (simplified.includes(OPEN)) simplified = simplifyLastBracket(simplified);
   while (simplified.includes(NOT)) simplified = simplifyFirstNot(simplified);
   while (simplified.includes(AND)) simplified = simplifyFirstAnd(simplified);
-  while (simplified.includes(OR)) simplified = simplifyFirstOr(simplified);
 
-  return simplified[0];
+  return toWord(simplified.some(toBoolean));
 };
 
 export const evaluate = (expression: string): boolean => {
