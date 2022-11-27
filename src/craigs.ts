@@ -6,8 +6,8 @@ const FALSE = "FALSE";
 const OPEN = "(";
 const CLOSE = ")";
 
-const mapBooleanToWord = (boolean: boolean): string => (boolean ? TRUE : FALSE);
-const mapWordToBoolean = (word: string): boolean => word === TRUE;
+const toWord = (boolean: boolean): string => (boolean ? TRUE : FALSE);
+const toBoolean = (word: string): boolean => word === TRUE;
 
 const simplifyLastBracket = (expression: string[]): string[] => {
   const indexOfLastOpen = expression.lastIndexOf(OPEN);
@@ -28,7 +28,7 @@ const simplifyFirstNot = (expression: string[]): string[] => {
 
   return [
     ...expression.slice(0, indexOfFirstNot),
-    mapBooleanToWord(!mapWordToBoolean(expression[indexOfFirstNot + 1])),
+    toWord(!toBoolean(expression[indexOfFirstNot + 1])),
     ...expression.slice(indexOfFirstNot + 2),
   ];
 };
@@ -38,8 +38,8 @@ const simplifyFirstAnd = (expression: string[]): string[] => {
 
   return [
     ...expression.slice(0, indexOfFirstAnd - 1),
-    mapBooleanToWord(
-      evaluate(expression[indexOfFirstAnd - 1]) && evaluate(expression[indexOfFirstAnd + 1])
+    toWord(
+      toBoolean(expression[indexOfFirstAnd - 1]) && toBoolean(expression[indexOfFirstAnd + 1])
     ),
     ...expression.slice(indexOfFirstAnd + 2),
   ];
@@ -50,9 +50,7 @@ const simplifyFirstOr = (expression: string[]): string[] => {
 
   return [
     ...expression.slice(0, indexOfFirstOr - 1),
-    mapBooleanToWord(
-      evaluate(expression[indexOfFirstOr - 1]) || evaluate(expression[indexOfFirstOr + 1])
-    ),
+    toWord(toBoolean(expression[indexOfFirstOr - 1]) || toBoolean(expression[indexOfFirstOr + 1])),
     ...expression.slice(indexOfFirstOr + 2),
   ];
 };
@@ -71,5 +69,5 @@ const simplify = (expression: string[]): string => {
 export const evaluate = (expression: string): boolean => {
   const formatted = expression.replace(/\(/g, "( ").replace(/\)/g, " )").split(" ");
 
-  return mapWordToBoolean(simplify(formatted));
+  return toBoolean(simplify(formatted));
 };
