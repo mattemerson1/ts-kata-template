@@ -21,37 +21,35 @@ const simplifyLastBracket = (expression: string[]): string[] => {
 };
 
 const simplifyFirstNot = (expression: string[]): string[] => {
-  const indexOfFirstNot = expression.indexOf(NOT);
+  const indexOfNot = expression.indexOf(NOT);
 
-  if (expression[indexOfFirstNot + 1] === NOT)
-    return [...expression.slice(0, indexOfFirstNot), ...expression.slice(indexOfFirstNot + 2)];
+  if (expression[indexOfNot + 1] === NOT)
+    return [...expression.slice(0, indexOfNot), ...expression.slice(indexOfNot + 2)];
 
   return [
-    ...expression.slice(0, indexOfFirstNot),
-    toWord(!toBoolean(expression[indexOfFirstNot + 1])),
-    ...expression.slice(indexOfFirstNot + 2),
+    ...expression.slice(0, indexOfNot),
+    toWord(!toBoolean(expression[indexOfNot + 1])),
+    ...expression.slice(indexOfNot + 2),
   ];
 };
 
 const simplifyFirstAnd = (expression: string[]): string[] => {
-  const indexOfFirstAnd = expression.indexOf(AND);
+  const indexOfAnd = expression.indexOf(AND);
 
   return [
-    ...expression.slice(0, indexOfFirstAnd - 1),
-    toWord(
-      toBoolean(expression[indexOfFirstAnd - 1]) && toBoolean(expression[indexOfFirstAnd + 1])
-    ),
-    ...expression.slice(indexOfFirstAnd + 2),
+    ...expression.slice(0, indexOfAnd - 1),
+    toWord(toBoolean(expression[indexOfAnd - 1]) && toBoolean(expression[indexOfAnd + 1])),
+    ...expression.slice(indexOfAnd + 2),
   ];
 };
 
 const simplifyFirstOr = (expression: string[]): string[] => {
-  const indexOfFirstOr = expression.indexOf(OR);
+  const indexOfOr = expression.indexOf(OR);
 
   return [
-    ...expression.slice(0, indexOfFirstOr - 1),
-    toWord(toBoolean(expression[indexOfFirstOr - 1]) || toBoolean(expression[indexOfFirstOr + 1])),
-    ...expression.slice(indexOfFirstOr + 2),
+    ...expression.slice(0, indexOfOr - 1),
+    toWord(toBoolean(expression[indexOfOr - 1]) || toBoolean(expression[indexOfOr + 1])),
+    ...expression.slice(indexOfOr + 2),
   ];
 };
 
