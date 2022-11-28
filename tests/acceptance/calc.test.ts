@@ -1,7 +1,8 @@
 import { evaluate as craigsEvaluate } from "../../src/craigs";
 import { evaluate as mattsEvaluate } from "../../src/matts";
+import { evaluate as richardsEvaluate } from "../../src/richards";
 
-describe.each([[craigsEvaluate], [mattsEvaluate]])("evaluate", (evaluate) => {
+describe.each([[craigsEvaluate], [mattsEvaluate], [richardsEvaluate]])("evaluate", (evaluate) => {
   it.each([
     ["TRUE", true],
     ["FALSE", false],
@@ -22,7 +23,7 @@ describe.each([[craigsEvaluate], [mattsEvaluate]])("evaluate", (evaluate) => {
     ["(TRUE OR TRUE OR TRUE) AND FALSE", false],
     ["NOT (TRUE AND TRUE)", false],
     ["NOT (TRUE AND (TRUE))", false],
-    ["FALSE || (NOT NOT (NOT (TRUE AND TRUE)))", false],
+    ["FALSE OR (NOT NOT (NOT (TRUE AND TRUE)))", false],
     ["(TRUE OR TRUE OR TRUE) AND FALSE", false],
     ["TRUE AND NOT NOT NOT TRUE AND TRUE", false],
     ["((TRUE))", true],

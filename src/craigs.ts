@@ -19,11 +19,8 @@ const simplifyLastBracket = (expression: string[]): string[] => {
   ];
 };
 
-const simplifyFirstNot = (expression: string[]): string[] => {
-  const indexOfNot = expression.indexOf(NOT);
-
-  if (expression[indexOfNot + 1] === NOT)
-    return [...expression.slice(0, indexOfNot), ...expression.slice(indexOfNot + 2)];
+const simplifyLastNot = (expression: string[]): string[] => {
+  const indexOfNot = expression.lastIndexOf(NOT);
 
   return [
     ...expression.slice(0, indexOfNot),
@@ -46,7 +43,7 @@ const simplify = (expression: string[]): string => {
   let simplified = expression;
 
   while (simplified.includes(OPEN)) simplified = simplifyLastBracket(simplified);
-  while (simplified.includes(NOT)) simplified = simplifyFirstNot(simplified);
+  while (simplified.includes(NOT)) simplified = simplifyLastNot(simplified);
   while (simplified.includes(AND)) simplified = simplifyFirstAnd(simplified);
 
   return toWord(simplified.some(toBoolean));
