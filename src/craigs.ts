@@ -9,23 +9,23 @@ const toWord = (boolean: boolean): string => (boolean ? TRUE : FALSE);
 const toBoolean = (word: string): boolean => word === TRUE;
 
 const simplifyLastBracket = (expression: string[]): string[] => {
-  const indexOfLastOpen = expression.lastIndexOf(OPEN);
-  const indexOfNextClose = expression.indexOf(CLOSE, indexOfLastOpen);
+  const lastIndexOfOpen = expression.lastIndexOf(OPEN);
+  const nextIndexOfClose = expression.indexOf(CLOSE, lastIndexOfOpen);
 
   return [
-    ...expression.slice(0, indexOfLastOpen),
-    simplify(expression.slice(indexOfLastOpen + 1, indexOfNextClose)),
-    ...expression.slice(indexOfNextClose + 1),
+    ...expression.slice(0, lastIndexOfOpen),
+    simplify(expression.slice(lastIndexOfOpen + 1, nextIndexOfClose)),
+    ...expression.slice(nextIndexOfClose + 1),
   ];
 };
 
 const simplifyLastNot = (expression: string[]): string[] => {
-  const indexOfNot = expression.lastIndexOf(NOT);
+  const lastIndexOfNot = expression.lastIndexOf(NOT);
 
   return [
-    ...expression.slice(0, indexOfNot),
-    toWord(!toBoolean(expression[indexOfNot + 1])),
-    ...expression.slice(indexOfNot + 2),
+    ...expression.slice(0, lastIndexOfNot),
+    toWord(!toBoolean(expression[lastIndexOfNot + 1])),
+    ...expression.slice(lastIndexOfNot + 2),
   ];
 };
 
