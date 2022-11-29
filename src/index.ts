@@ -3,15 +3,7 @@ export const booleanCalculator = (input: string): boolean => {
   const formattedInput = formatInput(input);
   const inputArray: string[] = formattedInput.split(" ");
   evaluatedStatement = evaluator(inputArray);
-  if (input == "NOT TRUE" || input == "FALSE") {
-    return false;
-  } else if (input == "NOT FALSE" || input == "TRUE") {
-    return true;
-  } else if (evaluatedStatement[0] == "TRUE") {
-    return true;
-  } else {
-    return false;
-  }
+  return (evaluatedStatement[0] == "TRUE");
 };
 
 const formatInput = (input: string): string => {
@@ -20,92 +12,71 @@ const formatInput = (input: string): string => {
 };
 
 const evaluator = (statementArray: string[]): string[] => {
-  const parenthesesEvaluated = evaluateParentheses(statementArray);
-  const notEvalulated = evaluateNot(parenthesesEvaluated);
-  const andEvaluated = evaluateAnd(notEvalulated);
-  const orEvaluated = evaluateOr(andEvaluated);
-  if (statementArray.length > 1) {
-    evaluator(orEvaluated);
+  while (statementArray.includes("(")) {
+    evaluateParentheses(statementArray);
   }
-  return orEvaluated;
-};
-
-const evaluateParentheses = (statementArray: string[]): string[] => {
-  let firstParentheses = 0;
-  let secondParentheses = 0;
-  for (let i = 0; i < statementArray.length; i++) {
-    if (statementArray[i] == "(") {
-      firstParentheses = i;
-    } else if (statementArray[i] == ")") {
-      secondParentheses = i;
-      const innerStatement = evaluator(
-        statementArray.slice(firstParentheses + 1, secondParentheses)
-      );
-      statementArray.splice(
-        firstParentheses,
-        secondParentheses - firstParentheses + 1,
-        innerStatement[0]
-      );
-    }
+  while (statementArray.includes("NOT")) {
+    evaluateNot(statementArray);
+  }
+  while (statementArray.includes("AND")) {
+    evaluateAnd(statementArray);
+  }
+  while (statementArray.includes("OR")) {
+    evaluateOr(statementArray);
+  }
+  if (statementArray.length > 1) {
+    evaluator(statementArray);
   }
   return statementArray;
 };
 
+const evaluateParentheses = (statementArray: string[]): string[] => {
+  const firstParentheses = statementArray.indexOf("(");
+  const secondParentheses = statementArray.lastIndexOf(")");
+  const innerStatement = evaluator(
+    statementArray.slice(firstParentheses + 1, secondParentheses)
+  );
+  statementArray.splice(
+    firstParentheses,
+    secondParentheses - firstParentheses + 1,
+    innerStatement[0]
+  );
+  return statementArray;
+};
+
 const evaluateNot = (statementArray: string[]): string[] => {
-  for (let i = 0; i < statementArray.length; i++) {
-    if (statementArray[i] == "NOT" && statementArray[i + 1] == "NOT") {
-      statementArray.splice(i, 2)
-      evaluateNot(statementArray);
-    } else if (statementArray[i] == "NOT" && statementArray[i + 1] == "TRUE") {
-      statementArray[i] = "FALSE";
-      statementArray.splice(i + 1, 1);
-    } else if (statementArray[i] == "NOT" && statementArray[i + 1] == "FALSE") {
-      statementArray[i] = "TRUE";
-      statementArray.splice(i + 1, 1);
-    }
+  const firstNotindex = statementArray.indexOf("NOT");
+  if (statementArray[firstNotindex + 1] == "NOT") {
+    statementArray.splice(firstNotindex, 2);
+  } else {
+    statementArray[firstNotindex + 1] === "TRUE" ? statementArray[firstNotindex] = "FALSE" : statementArray[firstNotindex] = "TRUE"
+    statementArray.splice(firstNotindex + 1, 1);
   }
   return statementArray;
 };
 
 const evaluateAnd = (statementArray: string[]): string[] => {
-  for (let i = 0; i < statementArray.length; i++) {
-    if (
-      statementArray[i] == "AND" &&
-      statementArray[i - 1] == "TRUE" &&
-      statementArray[i + 1] == "TRUE"
-    ) {
-      statementArray[i] = "TRUE";
-      statementArray.splice(i - 1, 1);
-      statementArray.splice(i, 1);
-    } else if (
-      statementArray[i] == "AND" &&
-      (statementArray[i - 1] == "FALSE" || statementArray[i + 1] == "FALSE")
-    ) {
-      statementArray[i] = "FALSE";
-      statementArray.splice(i - 1, 1);
-      statementArray.splice(i, 1);
-    }
+  const firstAndIndex = statementArray.indexOf("AND");
+  if (
+    statementArray[firstAndIndex + 1] == "TRUE" &&
+    statementArray[firstAndIndex - 1] == "TRUE"
+  ) {
+    statementArray.splice(firstAndIndex - 1, 3, "TRUE");
+  } else {
+    statementArray.splice(firstAndIndex - 1, 3, "FALSE");
   }
   return statementArray;
 };
+
 const evaluateOr = (statementArray: string[]): string[] => {
-  for (let i = 0; i < statementArray.length; i++) {
-    if (
-      statementArray[i] == "OR" &&
-      (statementArray[i - 1] == "TRUE" || statementArray[i + 1] == "TRUE")
-    ) {
-      statementArray[i] = "TRUE";
-      statementArray.splice(i - 1, 1);
-      statementArray.splice(i, 1);
-    } else if (
-      statementArray[i] == "OR" &&
-      statementArray[i - 1] == "FALSE" &&
-      statementArray[i + 1] == "FALSE"
-    ) {
-      statementArray[i] = "FALSE";
-      statementArray.splice(i - 1, 1);
-      statementArray.splice(i, 1);
-    }
+  const firstOrIndex = statementArray.indexOf("OR");
+  if (
+    statementArray[firstOrIndex + 1] == "FALSE" && 
+    statementArray[firstOrIndex - 1] == "FALSE"
+  ) {
+    statementArray.splice(firstOrIndex - 1, 3, "FALSE");
+  } else {
+    statementArray.splice(firstOrIndex - 1, 3, "TRUE");
   }
   return statementArray;
 };

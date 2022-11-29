@@ -69,4 +69,8 @@ describe("evaluate and return the boolean expression from a string input", () =>
     const input = "NOT NOT NOT NOT TRUE AND FALSE";
     expect(booleanCalculator(input)).toEqual(false);
   });
+  it("returns the correct boolean expression for single value input", () => {
+    const input = "TRUE AND TRUE AND (TRUE AND FALSE) OR TRUE";
+    expect(booleanCalculator(input)).toEqual(true);
+  });
 });
