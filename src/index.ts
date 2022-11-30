@@ -3,7 +3,7 @@ export const booleanCalculator = (input: string): boolean => {
   const formattedInput = formatInput(input);
   const inputArray: string[] = formattedInput.split(" ");
   evaluatedStatement = evaluator(inputArray);
-  return (evaluatedStatement[0] == "TRUE");
+  return evaluatedStatement[0] == "TRUE";
 };
 
 const formatInput = (input: string): string => {
@@ -23,9 +23,6 @@ const evaluator = (statementArray: string[]): string[] => {
   }
   while (statementArray.includes("OR")) {
     evaluateOr(statementArray);
-  }
-  if (statementArray.length > 1) {
-    evaluator(statementArray);
   }
   return statementArray;
 };
@@ -49,7 +46,9 @@ const evaluateNot = (statementArray: string[]): string[] => {
   if (statementArray[firstNotindex + 1] == "NOT") {
     statementArray.splice(firstNotindex, 2);
   } else {
-    statementArray[firstNotindex + 1] === "TRUE" ? statementArray[firstNotindex] = "FALSE" : statementArray[firstNotindex] = "TRUE"
+    statementArray[firstNotindex + 1] === "TRUE"
+      ? (statementArray[firstNotindex] = "FALSE")
+      : (statementArray[firstNotindex] = "TRUE");
     statementArray.splice(firstNotindex + 1, 1);
   }
   return statementArray;
@@ -71,7 +70,7 @@ const evaluateAnd = (statementArray: string[]): string[] => {
 const evaluateOr = (statementArray: string[]): string[] => {
   const firstOrIndex = statementArray.indexOf("OR");
   if (
-    statementArray[firstOrIndex + 1] == "FALSE" && 
+    statementArray[firstOrIndex + 1] == "FALSE" &&
     statementArray[firstOrIndex - 1] == "FALSE"
   ) {
     statementArray.splice(firstOrIndex - 1, 3, "FALSE");
