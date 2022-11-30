@@ -27,7 +27,7 @@ const evaluator = (statementArray: string[]): string[] => {
   return statementArray;
 };
 
-const evaluateParentheses = (statementArray: string[]): string[] => {
+const evaluateParentheses = (statementArray: string[]): void => {
   const firstParentheses = statementArray.indexOf("(");
   const secondParentheses = statementArray.lastIndexOf(")");
   const innerStatement = evaluator(
@@ -38,10 +38,9 @@ const evaluateParentheses = (statementArray: string[]): string[] => {
     secondParentheses - firstParentheses + 1,
     innerStatement[0]
   );
-  return statementArray;
 };
 
-const evaluateNot = (statementArray: string[]): string[] => {
+const evaluateNot = (statementArray: string[]): void => {
   const firstNotindex = statementArray.indexOf("NOT");
   if (statementArray[firstNotindex + 1] == "NOT") {
     statementArray.splice(firstNotindex, 2);
@@ -51,10 +50,9 @@ const evaluateNot = (statementArray: string[]): string[] => {
       : (statementArray[firstNotindex] = "TRUE");
     statementArray.splice(firstNotindex + 1, 1);
   }
-  return statementArray;
 };
 
-const evaluateAnd = (statementArray: string[]): string[] => {
+const evaluateAnd = (statementArray: string[]): void => {
   const firstAndIndex = statementArray.indexOf("AND");
   if (
     statementArray[firstAndIndex + 1] == "TRUE" &&
@@ -64,10 +62,9 @@ const evaluateAnd = (statementArray: string[]): string[] => {
   } else {
     statementArray.splice(firstAndIndex - 1, 3, "FALSE");
   }
-  return statementArray;
 };
 
-const evaluateOr = (statementArray: string[]): string[] => {
+const evaluateOr = (statementArray: string[]): void => {
   const firstOrIndex = statementArray.indexOf("OR");
   if (
     statementArray[firstOrIndex + 1] == "FALSE" &&
@@ -77,5 +74,4 @@ const evaluateOr = (statementArray: string[]): string[] => {
   } else {
     statementArray.splice(firstOrIndex - 1, 3, "TRUE");
   }
-  return statementArray;
 };
